@@ -8,7 +8,7 @@ function Features() {
   return (
     <section className="features">
       <h2 className="sr-only">Features</h2>
-      <div class="feature-item">
+      <div className="feature-item">
         <img src={IconChat} alt="Chat Icon" className="feature-icon" />
         <h3 className="feature-item-title">You are our #1 priority</h3>
         <p>
