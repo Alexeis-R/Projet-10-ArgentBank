@@ -1,9 +1,29 @@
 import React from "react";
 import "../Css/main.css";
 import Layout from "../Components/Layout";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../Store/authActions";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleSumit = (e) => {
+    console.log("test");
+    e.preventDefault();
+    dispatch(
+      login({
+        user: { email: "tony@stark.com" },
+        password: { password: "password123" },
+      })
+    );
+    if (isAuthenticated) {
+      navigate("/user");
+    }
+  };
+
   return (
     <Layout>
       <main className="main bg-dark">
@@ -23,9 +43,9 @@ function SignIn() {
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-            <Link to="/user" className="sign-in-button">
+            <div className="sign-in-button" onClick={(e) => handleSumit(e)}>
               Sign In
-            </Link>
+            </div>
           </form>
         </section>
       </main>
