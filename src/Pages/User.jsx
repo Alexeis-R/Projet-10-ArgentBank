@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Css/main.css";
-import Layout from "../Components/Layout";
-// import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
+import UpdateUsernameForm from "../components/Update/updateUserForm";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../Redux/userAction";
 
 function User() {
+  const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
+  const firstName = useSelector((state) => state.user?.firstName);
+  const lastName = useSelector((state) => state.user?.lastName);
+  const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUser({ token }));
+    }
+  }, [dispatch, token]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsEditing(false);
+  };
+
   return (
     <Layout>
       <main className="main bg-dark">
@@ -11,9 +33,17 @@ function User() {
           <h1>
             Welcome back
             <br />
-            Tony Jarvis!
+            {firstName} {lastName}!
           </h1>
-          <button className="edit-button">Edit Name</button>
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit Name
+          </button>
+          {isEditing && (
+            <UpdateUsernameForm
+              currentUsername={`${firstName} ${lastName}`}
+              onClose={handleCloseForm}
+            />
+          )}
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
