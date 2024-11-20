@@ -1,9 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../../Redux/authAction";
 import Logo from "../../../public/argentBankLogo.png";
 import "../../Css/main.css";
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
+
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate("/signin");
+  };
+
   return (
     <nav className="main-nav">
       <NavLink to="/" className="main-nav-logo">
@@ -14,9 +25,15 @@ function Header() {
         />
       </NavLink>
       <div>
-        <NavLink to="/SignIn" className="main-nav-item">
-          <i className="fa fa-user-circle"></i>Sign In
-        </NavLink>
+        {token ? (
+          <button onClick={handleLogout} className="main-nav-item">
+            <i className="fa fa-user-circle"></i>Sign Out
+          </button>
+        ) : (
+          <NavLink to="/SignIn" className="main-nav-item">
+            <i className="fa fa-user-circle"></i>Sign In
+          </NavLink>
+        )}
       </div>
     </nav>
   );
