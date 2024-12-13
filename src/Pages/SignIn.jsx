@@ -9,12 +9,14 @@ export function Login() {
   const navigate = useNavigate();
   const { errorMessage, isLoading, token } = useSelector((state) => state.auth);
 
+  // Redirige vers la page user si l'auth ok
   useEffect(() => {
     if (token) {
       navigate("/user");
     }
   }, [token, navigate]);
 
+  // Gestion du formulaire
   const handleSubmit = (event) => {
     event.preventDefault();
     const fd = new FormData(event.target);
@@ -27,11 +29,13 @@ export function Login() {
     );
   };
 
+  // Gestion de la déconnexion
   const handleLogout = () => {
     dispatch(logoutAction());
     navigate("/signin");
   };
 
+  // Affiche un message de bienvenue si l'utilisateur est connecté
   if (token) {
     return (
       <Layout>

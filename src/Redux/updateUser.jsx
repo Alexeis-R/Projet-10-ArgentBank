@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "../actions/userActions";
 
 const UpdateUsernameForm = ({ currentUsername, onClose }) => {
+  // État local pour le nom d'utilisateur
   const [username, setUsername] = useState(currentUsername);
   const dispatch = useDispatch();
+  // Sélection du token d'authentification depuis le state Redux
   const token = useSelector((state) => state.auth.token);
+
+  // Fonction de gestion de la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Envoi de l'action editUser avec le token et le nouveau nom d'utilisateur
     dispatch(editUser({ token, userName: username }));
+    // Fermeture du formulaire
     onClose();
   };
 

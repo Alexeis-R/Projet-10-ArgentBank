@@ -1,27 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "../Css/main.css";
 import Layout from "../components/Layout";
-import UpdateUsernameForm from "../components/Update/updateUserForm";
+import UpdateUsernameForm from "../Components/Update/updateUserForm";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../Redux/userAction";
 
 function User() {
+  // Gestion de l'etat de l'edition du nom
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
-  const firstName = useSelector((state) => state.user?.firstName);
-  const lastName = useSelector((state) => state.user?.lastName);
+  const firstName = useSelector((state) => state.user?.firstName || "");
+  const lastName = useSelector((state) => state.user?.lastName || "");
+  console.log("First Name:", firstName);
+  console.log("Last Name:", lastName);
   const token = useSelector((state) => state.auth.token);
 
+  // Recuperes les donnée de l utilisateur ( firstName et lastName )
   useEffect(() => {
-    if (token) {
-      dispatch(getUser({ token }));
-    }
+    const fetchUserData = async () => {
+      if (token) {
+        await dispatch(getUser({ token }));
+      }
+    };
+
+    fetchUserData();
   }, [dispatch, token]);
 
+  // Surveille les chagements de firstName et lastName
+  useEffect(() => {}, [firstName, lastName]);
+
+  // Fonction pour afficher le formulaire
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  // Fonction pour fermer le formulaire
   const handleCloseForm = () => {
     setIsEditing(false);
   };

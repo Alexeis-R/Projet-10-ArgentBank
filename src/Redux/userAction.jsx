@@ -22,7 +22,7 @@ export const getUser = createAsyncThunk(
         return rejectWithValue(data.message || "An error occurred");
       }
 
-      console.log("Fetched user data:", data.body); // Ajoutez ce log pour vérifier les données
+      console.log("Fetched user data:", data.body);
 
       return data.body;
     } catch (error) {
