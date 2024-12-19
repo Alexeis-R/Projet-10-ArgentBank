@@ -26,9 +26,9 @@ function Header() {
       </NavLink>
       <div>
         {token ? (
-          <button onClick={handleLogout} className="main-nav-item">
+          <NavLink to="/" onClick={handleLogout} className="main-nav-item">
             <i className="fa fa-user-circle"></i>Sign Out
-          </button>
+          </NavLink>
         ) : (
           <NavLink to="/SignIn" className="main-nav-item">
             <i className="fa fa-user-circle"></i>Sign In

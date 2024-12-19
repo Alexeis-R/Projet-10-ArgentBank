@@ -3,16 +3,16 @@ import "../Css/main.css";
 import Layout from "../components/Layout";
 import UpdateUsernameForm from "../Components/Update/updateUserForm";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "../Redux/userAction";
+import { getUser, editUser } from "../Redux/userAction";
+import { logoutAction } from "../Redux/authAction";
 
 function User() {
   // Gestion de l'etat de l'edition du nom
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
-  const firstName = useSelector((state) => state.user?.firstName || "");
-  const lastName = useSelector((state) => state.user?.lastName || "");
-  console.log("First Name:", firstName);
-  console.log("Last Name:", lastName);
+  const firstName = useSelector((state) => state.user.firstName);
+  const lastName = useSelector((state) => state.user.lastName);
+
   const token = useSelector((state) => state.auth.token);
 
   // Recuperes les donnée de l utilisateur ( firstName et lastName )
@@ -27,7 +27,10 @@ function User() {
   }, [dispatch, token]);
 
   // Surveille les chagements de firstName et lastName
-  useEffect(() => {}, [firstName, lastName]);
+  useEffect(() => {
+    console.log("First Name:", firstName);
+    console.log("Last Name:", lastName);
+  }, [firstName, lastName]);
 
   // Fonction pour afficher le formulaire
   const handleEditClick = () => {
@@ -37,6 +40,19 @@ function User() {
   // Fonction pour fermer le formulaire
   const handleCloseForm = () => {
     setIsEditing(false);
+  };
+
+  // Fonction pour soumettre les nouvelles données
+  const handleSave = (newFirstName, newLastName) => {
+    dispatch(
+      editUser({ token, firstName: newFirstName, lastName: newLastName })
+    );
+    setIsEditing(false);
+  };
+
+  // Fonction pour déconnecter l'utilisateur
+  const handleSignOut = () => {
+    dispatch(logoutAction());
   };
 
   return (
@@ -53,8 +69,9 @@ function User() {
           </button>
           {isEditing && (
             <UpdateUsernameForm
-              currentUsername={`${firstName} ${lastName}`}
+              currentUsername={firstName}
               onClose={handleCloseForm}
+              handleSave={handleSave}
             />
           )}
         </div>

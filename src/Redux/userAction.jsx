@@ -22,7 +22,7 @@ export const getUser = createAsyncThunk(
         return rejectWithValue(data.message || "An error occurred");
       }
 
-      console.log("Fetched user data:", data.body);
+      console.log("Fetched user data:", data.body); // a supprimer
 
       return data.body;
     } catch (error) {
@@ -33,7 +33,7 @@ export const getUser = createAsyncThunk(
 
 export const editUser = createAsyncThunk(
   "user/editUser",
-  async ({ token, userName }, { rejectWithValue }) => {
+  async ({ token, firstName, lastName }, { rejectWithValue }) => {
     try {
       const res = await fetch("http://localhost:3001/api/v1/user/profile", {
         method: "PUT",
@@ -41,7 +41,7 @@ export const editUser = createAsyncThunk(
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userName }),
+        body: JSON.stringify({ firstName, lastName }),
       });
 
       const data = await res.json();
@@ -50,6 +50,7 @@ export const editUser = createAsyncThunk(
         return rejectWithValue(data.message || "An error occurred");
       }
 
+      console.log("Edited user data:", data.body); // a supprimer
       return data.body;
     } catch (error) {
       return rejectWithValue("Network error");

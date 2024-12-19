@@ -54,19 +54,16 @@ const authSlice = createSlice({
       // Gestion de l'état pendant la requête de connexion
       .addCase(loginAction.pending, (state) => {
         state.isLoading = true;
-        state.errorMessage = "";
       })
-      // Gestion de l'état une fois la connexion est réussie
       .addCase(loginAction.fulfilled, (state, action) => {
         state.isLoading = false;
         state.token = action.payload;
       })
-      // Gestion de l'état si  la connexion échoue
       .addCase(loginAction.rejected, (state, action) => {
         state.isLoading = false;
         state.errorMessage = action.payload;
       })
-      // Gestion de l'état a la déconnexion
+      // Gestion de l'état pour la déconnexion
       .addCase(logoutAction, (state) => {
         state.token = null;
         localStorage.removeItem("token");

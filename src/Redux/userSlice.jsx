@@ -33,6 +33,7 @@ const profileSlice = createSlice({
       // Gestion de l'état lorsque la récupération des données utilisateur est réussie
       .addCase(getUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        console.log("Reducer user data:", action.payload); //a supprimer
         state.userName = action.payload.userName;
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
@@ -48,7 +49,10 @@ const profileSlice = createSlice({
       // Gestion de l'état lorsque la mise à jour du nom d'utilisateur est réussie
       .addCase(editUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        console.log("Reducer edited user data:", action.payload); //a supprimer
         state.userName = action.payload.userName;
+        state.firstName = action.payload.firstName;
+        state.lastName = action.payload.lastName;
       })
       // Gestion de l'état lorsque la mise à jour du nom d'utilisateur échoue
       .addCase(editUser.rejected, (state) => {
